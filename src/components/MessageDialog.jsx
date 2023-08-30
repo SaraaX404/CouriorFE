@@ -41,8 +41,8 @@ export function MessageDialog(args) {
         </div>
         <DialogBody divider className="ml-5">
           <div className="grid gap-6">
-          <div className="text-gray-900"><strong>Item Type:</strong> Item 1</div>
-          <div><strong>Item Status:</strong> Status</div>
+          <div className="text-gray-900"><strong>Item Type:</strong> {args.type}</div>
+          <div><strong>Item Status:</strong> {args.status}</div>
           <div><strong>onTime:</strong> Time</div>
           </div>
         </DialogBody>

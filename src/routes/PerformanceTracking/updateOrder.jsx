@@ -6,6 +6,7 @@ import Sidepanel from "../../components/sidepanel";
 import axios from 'axios'
 import { useParams } from 'react-router-dom';
 import bg from '../../images/mainbg1.jpg';
+import { BaseUrl } from "../../utils/base_url";
 
 
 
@@ -14,7 +15,7 @@ function UpdateOrder() {
     const [data,setData] = useState({})
 
     const fetchData = async(data, i)=>{
-      const res =  await axios.get(`http://localhost:5000/delivery/${slug}`)
+      const res =  await axios.get(`${BaseUrl}/delivery/${slug}`)
       if(Array.isArray(res.data.data)){
         setData(res.data.data[0])
       }else{
@@ -38,7 +39,7 @@ function UpdateOrder() {
         delete dataWithoutId.id;
         delete dataWithoutId.order_date
         delete dataWithoutId.preferred_date
-        await axios.put(`http://localhost:5000/delivery/${slug}`, dataWithoutId)
+        await axios.put(`${BaseUrl}/delivery/${slug}`, dataWithoutId)
         window.location.href = `/MoreInfo/${data?.id}`
         console.log(data)
     };

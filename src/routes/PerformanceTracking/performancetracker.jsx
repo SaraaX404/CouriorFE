@@ -3,6 +3,7 @@ import Sidepanel from "../../components/sidepanel";
 import {useEffect, useState} from 'react'
 import bg from '../../images/mainbg1.jpg';
 import axios from 'axios'
+import { BaseUrl } from "../../utils/base_url";
 
 export default function Tickets() {
 
@@ -11,7 +12,7 @@ export default function Tickets() {
   
 
   const fetchData = async()=>{
-    const res = await axios.get('http://localhost:5000/delivery')
+    const res = await axios.get(`${BaseUrl}/delivery`)
     console.log(res.data)
     if(Array.isArray(res.data.data)){
       setData(res.data.data)

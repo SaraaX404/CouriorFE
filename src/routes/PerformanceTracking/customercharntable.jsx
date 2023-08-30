@@ -3,12 +3,37 @@ import Sidepanel from "../../components/sidepanel";
 import bg from '../../images/mainbg1.jpg';
 import { MessageDialog } from "../../components/MessageDialog";
 import { useState, useEffect } from 'react';
+import axios from 'axios'
+import { BaseUrl } from "../../utils/base_url";
 
 export default function Tickets() {
 
-  const [popUpStatus, setpopUpStatus] = useState(false);
+  const [data,setData] = useState([])
 
-  const popUp = () => {
+  
+
+  const fetchData = async()=>{
+    const res = await axios.get(`${BaseUrl}/delivery/charn`)
+    console.log(res.data)
+    if(Array.isArray(res.data.data)){
+      setData(res.data.data)
+    }else{
+      setData([])
+    }
+
+  }
+
+  useEffect(()=>{
+    fetchData()
+  },[])
+
+
+  const [popUpStatus, setpopUpStatus] = useState(false);
+  const [type, setType] = useState('');
+  const [status, setStatus] = useState('');
+  const popUp = (type,status) => {
+    setType(type)
+    setStatus(status)
     setpopUpStatus(!popUpStatus)
     console.log(popUpStatus)
   }
@@ -57,50 +82,34 @@ export default function Tickets() {
                       </thead>
                       <tbody>
 
-                        
-                      <tr
-                          class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
-                          <td class="whitespace-nowrap px-6 py-4 font-medium">1</td>
-                          <td class="whitespace-nowrap px-6 py-4">John Doe</td>
-                          <td class="whitespace-nowrap px-6 py-4">Test</td>
-                          <td class="whitespace-nowrap px-6 py-4">Test</td>
-                          <td class="whitespace-nowrap px-6 py-4">Test</td>
-                          <td class="whitespace-nowrap px-6 py-4">Test</td>
-                          <td class="whitespace-nowrap px-6 py-4">Test</td>
-                            <td class="whitespace-nowrap px-6 py-4">
-                            <Link to={""}>
-                              <button onClick={popUp} class="group relative h-8 w-24 overflow-hidden rounded-2xl bg-blue-500 text-sm font-bold text-white mr-4">
-                                View
-                                <div class="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
-                              </button>
-                            </Link>
-                          </td>
-                        </tr>
+                        {data.map((x,i)=>(
+  <tr
+  class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
+  <td class="whitespace-nowrap px-6 py-4 font-medium">1</td>
+  <td class="whitespace-nowrap px-6 py-4">{x?.sender_name}</td>
+  <td class="whitespace-nowrap px-6 py-4">{x?.sender_address}</td>
+  <td class="whitespace-nowrap px-6 py-4">{x?.province}</td>
+  <td class="whitespace-nowrap px-6 py-4">{x?.last_item}</td>
+  <td class="whitespace-nowrap px-6 py-4">{x?.feedback}</td>
+  <td class="whitespace-nowrap px-6 py-4">{x?.charn_status}%</td>
+    <td class="whitespace-nowrap px-6 py-4">
+    <Link to={""}>
+      <button onClick={()=>popUp(x?.item_type, x?.item_status)} class="group relative h-8 w-24 overflow-hidden rounded-2xl bg-blue-500 text-sm font-bold text-white mr-4">
+        View
+        <div class="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
+      </button>
+    </Link>
+  </td>
+</tr>
+                        ))}
+                    
 
-                        <tr
-                          class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
-                          <td class="whitespace-nowrap px-6 py-4 font-medium">2</td>
-                          <td class="whitespace-nowrap px-6 py-4"> Test</td>
-                          <td class="whitespace-nowrap px-6 py-4">Test</td>
-                          <td class="whitespace-nowrap px-6 py-4">Test</td>
-                          <td class="whitespace-nowrap px-6 py-4">Test</td>
-                          <td class="whitespace-nowrap px-6 py-4">Test</td>
-                          <td class="whitespace-nowrap px-6 py-4">Test</td>
-                          <td class="whitespace-nowrap px-6 py-4">
-                          
-                            <a href={""}>
-                              <button onClick={popUp} class="group relative h-8 w-24 overflow-hidden rounded-2xl bg-blue-500 text-sm font-bold text-white mr-4">
-                                View
-                                <div class="absolute inset-0 h-full w-full scale-0 rounded-2xl transition-all duration-300 group-hover:scale-100 group-hover:bg-white/30"></div>
-                              </button>
-                            </a>
-                          </td>
-                        </tr>
+                     
 
                         
                         {popUpStatus &&
                           <div>
-                            <MessageDialog click={true} link={`/CustomerCharnTable`}/>
+                            <MessageDialog click={true} status={status} type={type} link={`/CustomerCharnTable`}/>
                           </div>
                         }
 

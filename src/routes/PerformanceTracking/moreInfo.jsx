@@ -5,6 +5,7 @@ import { faPlus, faStarHalfStroke } from '@fortawesome/free-solid-svg-icons'
 import Sidepanel from "../../components/sidepanel";
 import {MessageDialog} from "../../components/MessageDialog";
 import axios from 'axios'
+import { BaseUrl } from "../../utils/base_url";
 
 
 
@@ -16,7 +17,7 @@ function MoreInfo() {
     const [data,setData] = useState([])
 
     const fetchData = async(data, i)=>{
-      const res =  await axios.get(`http://localhost:5000/delivery/${slug}`)
+      const res =  await axios.get(`${BaseUrl}/delivery/${slug}`)
       if(Array.isArray(res.data.data)){
         setData(res.data.data)
       }else{

@@ -5,6 +5,7 @@ import { faPlus, faStarHalfStroke } from '@fortawesome/free-solid-svg-icons'
 import Sidepanel from "../../components/sidepanel";
 import bg from '../../images/mainbg1.jpg';
 import axios from 'axios'
+import { BaseUrl } from "../../utils/base_url";
 
 
 function CreateOrder() {
@@ -13,7 +14,7 @@ function CreateOrder() {
     const data = {}
 
     const handleSubmit = async (event) => {
-        await axios.post('http://localhost:5000/delivery', data)
+        await axios.post(`${BaseUrl}/delivery`, data)
         window.location.href = '/performancetracker'
 
       
